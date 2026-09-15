@@ -13,11 +13,17 @@ export function MyHome(){
       const [allCryptos,setallcryptos] =useState([]);
       const [dataCryptos,setdataCryptos] = useState([]);
      
+     
 
         useEffect(()=>{
           initialiasation();
       
         },[]);
+
+        useEffect(()=>{
+
+
+        },[])
       
         async function initialiasation(){
           const data = await getInfos();
