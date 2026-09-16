@@ -16,7 +16,7 @@ export default function App() {
 
   return (
   <NavigationContainer theme={navTheme}>
-    <Stack.Navigator initialRouteName="dashboard"  screenOption={{headerShown:false,animation:""}}>
+    <Stack.Navigator initialRouteName="home"  screenOptions={{headerShown:false,animation:"fade"}}>
     <Stack.Screen name="home" component={MyHome}/>
     <Stack.Screen name="detail" component={MyDetails}/>
     <Stack.Screen name="dashboard" component={Mydashboard}/>

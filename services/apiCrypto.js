@@ -28,7 +28,7 @@ export async function getInfos(){
             "volume":item.total_volume,
             "symbol":item.symbol,
             "id":item.id,
-            "percent":item.price_change_percentag_24h,
+            "percent":item.price_change_percentage_24h,
             
         
         }

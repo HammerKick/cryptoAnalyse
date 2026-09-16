@@ -40,6 +40,7 @@ export function MyHome(){
   }else {
   return (
     <ImageBackground style={{flex:1}} source={ImageBack} imageStyle={{opacity:0.5}}>
+      <View style={{marginBottom:60}}/>
       
       <FlatList
        data={dataCryptos}
