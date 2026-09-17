@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Image, Text,TouchableOpacity,View } from "react-native";
 export function MyCardCrypto({crypto}){
     const nav = useNavigation();
@@ -23,7 +24,20 @@ return(
         nav.navigate("detail",{crypto:crypto});
 
     }}>
-    <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:"darkgrey",borderRadius:20,marginBottom:10,marginHorizontal:10,padding:10}}>
+    <LinearGradient 
+    colors={["purple","blue","white"]}
+    start={{x:0,y:0}}
+    end={{x:1,y:1}}
+    
+    style={{flexDirection:"row",
+        justifyContent:"space-between",
+        backgroundColor:"transparent",
+        borderRadius:20,
+        marginBottom:10,
+        marginHorizontal:10,
+        padding:10,
+        
+        }}>
         <View>
             <Image source={{uri:crypto.logo}} style={{height:40,width:40,marginBottom:10}}/>
            
@@ -44,7 +58,7 @@ return(
      
         
         
-    </View>
+    </LinearGradient>
     </TouchableOpacity>
 )
 }
