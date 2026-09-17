@@ -13,7 +13,7 @@ const params = {
 
 const paramHistoric = {
     "vs_currency":"eur",
-    "days":7
+    "days":2
 }
 
 //récuperer les infos des cryptos
@@ -39,5 +39,23 @@ export async function getInfos(){
     }catch(e){
         console.log(e);
 
+    }
+}
+
+//récupérer l'historique des prix (48h) pour le graphe
+export async function getHistory(id){
+    try{
+        const response = await axios(`${BASE_HISTORY}/coins/${id}/market_chart`,{params:paramHistoric})
+        const prices = response.data.prices;
+        return prices.map(([timestamp,price])=>{
+            const date = new Date(timestamp);
+            return {
+                "heure": date.getHours()+"h",
+                "prix": price,
+            }
+        });
+    }catch(e){
+        console.log(e);
+        return [];
     }
 }
