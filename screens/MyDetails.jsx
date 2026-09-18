@@ -56,11 +56,13 @@ export function MyDetails({ route }) {
     setIsAnalysing(true);
     setErreur(null);
     setAnalyse(null);
+
     try {
       const result = await getEstimation(crypt.id);
       setAnalyse(result);
     } catch (e) {
       console.error("Erreur lors de l'analyse IA :", e);
+
       setErreur(
         "L'analyse a échoué. Vérifie que le serveur backend Flask est bien lancé et que l'IP dans apiIA.js est correcte.",
       );
@@ -90,10 +92,15 @@ export function MyDetails({ route }) {
             source={{ uri: crypt.logo }}
             style={{ height: 70, width: 70 }}
           />
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>{crypt.name}</Text>
+
+          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+            {crypt.name}
+          </Text>
+
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>
             Volume : {crypt.volume}
           </Text>
+
           <Text
             style={{
               fontSize: 20,
@@ -119,7 +126,12 @@ export function MyDetails({ route }) {
                 labels: history
                   .filter((_, i) => i % Math.ceil(history.length / 5) === 0)
                   .map((p) => p.heure),
-                datasets: [{ data: history.map((p) => p.prix) }],
+
+                datasets: [
+                  {
+                    data: history.map((p) => p.prix),
+                  },
+                ],
               }}
               width={screenWidth - 20}
               height={200}
@@ -132,10 +144,15 @@ export function MyDetails({ route }) {
                 labelColor: () => "#ffffff",
               }}
               bezier
-              style={{ borderRadius: 16, marginTop: 10 }}
+              style={{
+                borderRadius: 16,
+                marginTop: 10,
+              }}
             />
           ) : (
-            <Text style={{ textAlign: "center" }}>Historique indisponible</Text>
+            <Text style={{ textAlign: "center" }}>
+              Historique indisponible
+            </Text>
           )}
         </View>
 
@@ -159,7 +176,13 @@ export function MyDetails({ route }) {
           >
             Analyse IA — {crypt.name}
           </Text>
-          <Text style={{ color: "white", marginBottom: 10 }}>
+
+          <Text
+            style={{
+              color: "white",
+              marginBottom: 10,
+            }}
+          >
             Prix actuel : {priceLisible} €
           </Text>
 
@@ -174,27 +197,61 @@ export function MyDetails({ route }) {
           />
 
           {isAnalysing && (
-            <View style={{ marginTop: 15, alignItems: "center" }}>
+            <View
+              style={{
+                marginTop: 15,
+                alignItems: "center",
+              }}
+            >
               <ActivityIndicator size="small" color="white" />
-              <Text style={{ color: "white", marginTop: 5 }}>
+
+              <Text
+                style={{
+                  color: "white",
+                  marginTop: 5,
+                }}
+              >
                 Analyse en cours...
               </Text>
             </View>
           )}
 
           {erreur && (
-            <Text style={{ color: "red", marginTop: 15 }}>{erreur}</Text>
+            <Text
+              style={{
+                color: "red",
+                marginTop: 15,
+              }}
+            >
+              {erreur}
+            </Text>
           )}
 
           {analyse && !isAnalysing && (
             <View style={{ marginTop: 15 }}>
-              <Text style={{ color: "white", fontSize: 16 }}>
+
+              {/* Estimation */}
+
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                }}
+              >
                 Estimation dans 24h :{" "}
-                <Text style={{ fontWeight: "bold" }}>
+
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
                   {analyse.analyse.prix_min_24h} € -{" "}
                   {analyse.analyse.prix_max_24h} €
                 </Text>
               </Text>
+
+              {/* Tendance */}
+
               <Text
                 style={{
                   color: getTendanceColor(analyse.analyse.tendance),
@@ -205,21 +262,164 @@ export function MyDetails({ route }) {
               >
                 Tendance : {analyse.analyse.tendance}
               </Text>
-              <Text style={{ color: "white", marginTop: 10 }}>
+
+              {/* Explication */}
+
+              <Text
+                style={{
+                  color: "white",
+                  marginTop: 10,
+                }}
+              >
                 {analyse.analyse.explication}
               </Text>
+
+              {/* Actualités */}
+
+              {analyse.analyse.actualites?.length > 0 && (
+                <View style={{ marginTop: 20 }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 17,
+                      fontWeight: "bold",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Actualités importantes
+                  </Text>
+
+                  {analyse.analyse.actualites.map((actu, index) => (
+                    <View
+                      key={index}
+                      style={{
+                        marginBottom: 15,
+                        paddingBottom: 10,
+                        borderBottomWidth: 1,
+                        borderBottomColor: "gray",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: 15,
+                        }}
+                      >
+                        {actu.titre}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: "lightgray",
+                          marginTop: 3,
+                        }}
+                      >
+                        {actu.source} — {actu.date}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color:
+                            actu.impact === "positif"
+                              ? "lightgreen"
+                              : actu.impact === "negatif"
+                                ? "salmon"
+                                : "orange",
+
+                          fontWeight: "bold",
+                          marginTop: 5,
+                        }}
+                      >
+                        Impact : {actu.impact}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: "white",
+                          marginTop: 5,
+                        }}
+                      >
+                        {actu.explication_impact}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              {/* Facteurs positifs */}
+
+              {analyse.analyse.facteurs_positifs?.length > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  <Text
+                    style={{
+                      color: "lightgreen",
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Facteurs positifs
+                  </Text>
+
+                  {analyse.analyse.facteurs_positifs.map(
+                    (facteur, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          color: "white",
+                          marginTop: 5,
+                        }}
+                      >
+                        • {facteur}
+                      </Text>
+                    ),
+                  )}
+                </View>
+              )}
+
+              {/* Facteurs négatifs */}
+
+              {analyse.analyse.facteurs_negatifs?.length > 0 && (
+                <View style={{ marginTop: 15 }}>
+                  <Text
+                    style={{
+                      color: "salmon",
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Facteurs négatifs
+                  </Text>
+
+                  {analyse.analyse.facteurs_negatifs.map(
+                    (facteur, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          color: "white",
+                          marginTop: 5,
+                        }}
+                      >
+                        • {facteur}
+                      </Text>
+                    ),
+                  )}
+                </View>
+              )}
+
+              {/* Incertitude */}
+
               <Text
                 style={{
                   color: "lightgray",
-                  marginTop: 10,
+                  marginTop: 15,
                   fontStyle: "italic",
                 }}
               >
                 Incertitude : {analyse.analyse.niveau_incertitude} —{" "}
                 {analyse.analyse.limites}
-              </Text>
-              <Text style={{ color: "lightgray", marginTop: 10, fontSize: 10 }}>
-                Sources :
               </Text>
             </View>
           )}
