@@ -62,7 +62,7 @@ export function MyDetails({ route }) {
     } catch (e) {
       console.error("Erreur lors de l'analyse IA :", e);
       setErreur(
-        "L'analyse a échoué. Vérifie que le serveur backend Flask est bien lancé et que l'IP dans apiIA.js est correcte."
+        "L'analyse a échoué. Vérifie que le serveur backend Flask est bien lancé et que l'IP dans apiIA.js est correcte.",
       );
     } finally {
       setIsAnalysing(false);
@@ -86,7 +86,10 @@ export function MyDetails({ route }) {
         </TouchableOpacity>
 
         <View style={{ alignItems: "center" }}>
-          <Image source={{ uri: crypt.logo }} style={{ height: 70, width: 70 }} />
+          <Image
+            source={{ uri: crypt.logo }}
+            style={{ height: 70, width: 70 }}
+          />
           <Text style={{ fontSize: 25, fontWeight: "bold" }}>{crypt.name}</Text>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>
             Volume : {crypt.volume}
@@ -139,14 +142,21 @@ export function MyDetails({ route }) {
         {/* Bloc Analyse IA */}
         <View
           style={{
-            marginTop: 20,
-            marginBottom: 30,
+            marginTop: 10,
+            marginBottom: 50,
             backgroundColor: "rgba(0,0,0,0.6)",
             borderRadius: 16,
             padding: 15,
           }}
         >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 18,
+              fontWeight: "bold",
+              marginBottom: 10,
+            }}
+          >
             Analyse IA — {crypt.name}
           </Text>
           <Text style={{ color: "white", marginBottom: 10 }}>
@@ -154,7 +164,11 @@ export function MyDetails({ route }) {
           </Text>
 
           <Button
-            title="Lancer l'estimation du prix"
+            title={
+              !analyse
+                ? "Lancer l'estimation du prix"
+                : "Relancer l'estimation du prix"
+            }
             onPress={lancerAnalyse}
             disabled={isAnalysing}
           />
@@ -162,18 +176,23 @@ export function MyDetails({ route }) {
           {isAnalysing && (
             <View style={{ marginTop: 15, alignItems: "center" }}>
               <ActivityIndicator size="small" color="white" />
-              <Text style={{ color: "white", marginTop: 5 }}>Analyse en cours...</Text>
+              <Text style={{ color: "white", marginTop: 5 }}>
+                Analyse en cours...
+              </Text>
             </View>
           )}
 
-          {erreur && <Text style={{ color: "red", marginTop: 15 }}>{erreur}</Text>}
+          {erreur && (
+            <Text style={{ color: "red", marginTop: 15 }}>{erreur}</Text>
+          )}
 
           {analyse && !isAnalysing && (
             <View style={{ marginTop: 15 }}>
               <Text style={{ color: "white", fontSize: 16 }}>
                 Estimation dans 24h :{" "}
                 <Text style={{ fontWeight: "bold" }}>
-                  {analyse.analyse.prix_min_24h} € - {analyse.analyse.prix_max_24h} €
+                  {analyse.analyse.prix_min_24h} € -{" "}
+                  {analyse.analyse.prix_max_24h} €
                 </Text>
               </Text>
               <Text
@@ -189,8 +208,15 @@ export function MyDetails({ route }) {
               <Text style={{ color: "white", marginTop: 10 }}>
                 {analyse.analyse.explication}
               </Text>
-              <Text style={{ color: "lightgray", marginTop: 10, fontStyle: "italic" }}>
-                Incertitude : {analyse.analyse.niveau_incertitude} — {analyse.analyse.limites}
+              <Text
+                style={{
+                  color: "lightgray",
+                  marginTop: 10,
+                  fontStyle: "italic",
+                }}
+              >
+                Incertitude : {analyse.analyse.niveau_incertitude} —{" "}
+                {analyse.analyse.limites}
               </Text>
             </View>
           )}
