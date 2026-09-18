@@ -91,6 +91,7 @@ def predict(coin_id):
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",
             max_tokens=500,
+            tools=[{"type": "web_search_20250305","name": "web_search", "max_uses": 5}],
             messages=[{"role": "user", "content": prompt}],
         )
         raw_text = message.content[0].text.strip()
@@ -109,3 +110,5 @@ def predict(coin_id):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+    
+    
