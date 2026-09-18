@@ -218,6 +218,9 @@ export function MyDetails({ route }) {
                 Incertitude : {analyse.analyse.niveau_incertitude} —{" "}
                 {analyse.analyse.limites}
               </Text>
+              <Text style={{ color: "lightgray", marginTop: 10, fontSize: 10 }}>
+                Sources :
+              </Text>
             </View>
           )}
         </View>
